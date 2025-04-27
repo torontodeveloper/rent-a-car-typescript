@@ -1,95 +1,77 @@
-import Image from "next/image";
+"use client";
+import { EventHandler, useState } from "react";
+import Header from "../components/header";
+import CourseGoal from "@/components/course-goal";
+import CourseGoalList from "@/components/course-goal-list";
+import logo from "../public/mango.jpg";
 import styles from "./page.module.css";
 
+type CourseGoal = {
+  id: number;
+  title: string;
+  description: string;
+};
 export default function Home() {
+  const [title, setTitle] = useState<string>("");
+  const [goals, setGoals] = useState<CourseGoal[]>([]);
+  const [description, setDescription] = useState<string>("");
+  const [rentalCar, setRentalCar] = useState<string>("");
+  function handleGoal() {
+    setGoals((prevState: CourseGoal[]) => [
+      ...prevState,
+      {
+        id: Math.random() * 10,
+        title,
+        description,
+      },
+    ]);
+  }
+  function handleRentalClick(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+  }
+  function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+  }
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setRentalCar(event.target.value);
+  }
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+      <Header img={logo} altText="logo">
+        <input
+          id="title"
+          value={title}
+          onChange={(event) => setTitle(event?.target?.value)}
+          placeholder="Rent  Tesla"
         />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <input
+          id="description"
+          value={description}
+          onChange={(event) => setDescription(event?.target?.value)}
+          placeholder="Tesla is EV car and sleeky, sexy car to drive"
+        />
+        <button type="button" onClick={handleGoal}>
+          Add Me
+        </button>
+      </Header>
+      <CourseGoalList goals={goals} />
+      <form method="post" onSubmit={handleSubmit}>
+        <label>
+          Please Select Ur Favourite Car
+          <br />
+          <select onChange={handleChange}>
+            <option value="rentTesla">Rent Tesla</option>
+            <option value="rentMercedez">Rent Mercedez</option>
+            <option value="rentBmw">Rent BMW</option>
+            <option value="rentHonda">Rent Honda</option>
+          </select>
+          <button type="submit" onClick={handleRentalClick}>
+            Add Rental Car
+          </button>
+        </label>
+      </form>
+      <br />
+      {rentalCar}
     </div>
   );
 }
