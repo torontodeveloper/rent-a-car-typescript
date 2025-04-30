@@ -1,5 +1,5 @@
 "use client";
-import { EventHandler, useState } from "react";
+import { useState } from "react";
 import Header from "../components/header";
 import CourseGoal from "@/components/course-goal";
 import CourseGoalList from "@/components/course-goal-list";
@@ -26,13 +26,14 @@ export default function Home() {
       },
     ]);
   }
-  function handleRentalClick(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleRentalClick(event: React.SyntheticEvent<HTMLButtonElement>) {
     event.preventDefault();
   }
-  function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
   }
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    console.log("event", event.target.value);
     setRentalCar(event.target.value);
   }
   return (
